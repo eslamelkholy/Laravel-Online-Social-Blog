@@ -31,9 +31,9 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        Gate::define('create-usersphone', function ($user) {
-            return $user->id == 1;
-        });
+        // Gate::define('create-usersphone', function ($user) {
+        //     return $user->id == 1;
+        // });
 
         parent::boot();
     }

@@ -26,7 +26,7 @@ class UsersPhoneController extends Controller
      */
     public function create()
     {
-        $this->authorize('create-usersphone');
+        $this->authorize("create", "App\UsersPhone");
         return view('phones.create');
     }
 
@@ -63,7 +63,9 @@ class UsersPhoneController extends Controller
      */
     public function edit($id)
     {
-        return view('phones.edit', ['phone' => UsersPhone::find($id)]);
+        $userPhone = UsersPhone::find($id);
+        $this->authorize("view", $userPhone);
+        return view('phones.edit', ['phone' => $userPhone]);
     }
 
     /**
@@ -75,7 +77,9 @@ class UsersPhoneController extends Controller
      */
     public function update(PhoneRequest $request, $id)
     {
+        
         $phone = UsersPhone::find($id);
+        $this->authorize('update', $phone);
         $phone->update($request->all());
         return redirect("/phone")->with('success', 'Your Phone Number Has Been Updated Successfully');
     }
@@ -89,6 +93,7 @@ class UsersPhoneController extends Controller
     public function destroy($id)
     {
         $phone = UsersPhone::find($id);
+        $this->authorize('delete', $phone);
         $phone->delete();
         return redirect("/phone");
     }

@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('phone', 'UsersPhoneController');
-Route::resource('home', 'HomeController');
-Route::resource('contact', 'ContactController');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+Route::resource('phone', 'UsersPhoneController')->middleware('auth');
+Route::resource('home', 'HomeController')->middleware('auth');
+Route::resource('contact', 'ContactController')->middleware('auth');

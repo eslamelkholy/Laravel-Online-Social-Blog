@@ -1,14 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\UsersPhone;
 use Auth;
 use App\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use App\Contact;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\ContactRequest;
 class ContactController extends Controller
 {
     /**
@@ -95,9 +94,14 @@ class ContactController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        DB::table('contacts')->where('contact_id', $id)->delete();
-        return redirect("/contact")->with('success', 'Contact has Been Deleted Successfully');
+        $contact = DB::table('contacts')->where('contact_id', $id);
+        if($contact->first()->user_id == Auth::id())
+        {
+            $contact->delete();
+            return redirect("/contact")->with('success', 'Contact has Been Deleted Successfully');
+        }
+        return redirect("/contact")->with('error', 'UnAuthorized');
     }
 }
